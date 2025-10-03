@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>OnlineShop - Panier</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <script type="text/javascript" src="./assets/js/jquery-3.2.1.min.js"></script>
+    <script src="./assets/scripts/header.js" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <div>
+        <a href="./index.html">
+          <img alt="logo" src="./assets/img/logo.svg" title="Accueil" />
+        </a>
+        <nav>
+          <ul>
+            <li class="active"><a href="./index.html">Accueil</a></li>
+            <li><a href="./products.html">Produits</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+            <li>
+              <a class="shopping-cart" href="./shopping-cart.html" title="Panier">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                  <i class="fa fa-shopping-cart fa-stack-1x"></i>
+                </span>
+                <span class="count">4</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="cart">
+      <article>
+        <h1>Panier</h1>
+        <div id="empty-cart">Aucun produit dans le panier.</div>
+        <table class="cart-items" style="display: none;">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Produit</th>
+              <th>Prix unitaire</th>
+              <th>Quantité</th>
+              <th>Prix</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Cart items will be loaded here via jQuery -->
+          </tbody>
+        </table>
+        <p id="cart-total" style="display: none;">Total: <strong>0&thinsp;$</strong></p>
+        <div class="buttons" style="display: none;">
+          <button id="remove-all-items-button" class="btn">Vider le panier</button>
+          <a class="btn" href="./order.html">Commander<i class="fa fa-angle-double-right"></i></a>
+        </div>
+      </article>
+    </main>
+    <footer>
+      <p>Nelson Kamga Newa 10288991, Guillaume Sabourin 20278765, Mandi Téo Vigier 20237155, Ahmed Mhedhbi 20237399</p>
+    </footer>
+    <script>
+      $(document).ready(function() {
+        var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        updateCartDisplay();
+
+        function updateCartDisplay() {
+          if (cartItems.length > 0) {
+            $('.cart-items tbody').empty();
+            loadCartItems();
+            $('.cart-items, #cart-total, .buttons').show();
+            $('#empty-cart').hide();
+          } else {
+            $('.cart-items, #cart-total, .buttons').hide();
+            $('#empty-cart').show();
+          }
+          updateCartTotalItems();
+        }
+
+        function loadCartItems() {
+          cartItems.sort((a, b) => a.name.localeCompare(b.name));
+          cartItems.forEach(function(item) {
+            $('.cart-items tbody').append(`
+              <tr>
+                <td><button class="remove-item-button"><i class="fas fa-times"></i></button></td>
+                <td>${item.name}</td>
+                <td class="price-unit">${item.price.toFixed(2)}&thinsp;$</td>
+                <td>
+                  <button class="remove-quantity-button" ${item.quantity === 1 ? 'disabled' : ''}><i class="fas fa-minus"></i></button>
+                  <span class="quantity">${item.quantity}</span>
+                  <button class="add-quantity-button"><i class="fas fa-plus"></i></button>
+                </td>
+                <td class="price">${(item.price * item.quantity).toFixed(2)}&thinsp;$</td>
+              </tr>
+            `);
+          });
+          updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+          var total = cartItems.reduce(function(acc, item) {
+            return acc + (item.price * item.quantity);
+          }, 0);
+          $('#cart-total strong').text(total.toFixed(2) + '$');
+        }
+
+        $('body').on('click', '.remove-item-button', function() {
+          if (confirm('Voulez-vous supprimer ce produit du panier ?')) {
+            var itemName = $(this).closest('tr').find('td:nth-child(2)').text();
+            cartItems = cartItems.filter(function(item) {
+              return item.name !== itemName;
+            });
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            updateCartDisplay();
+          }
+        });
+
+        $('body').on('click', '.remove-quantity-button', function() {
+          var itemName = $(this).closest('tr').find('td:nth-child(2)').text();
+          cartItems = cartItems.map(function(item) {
+            if (item.name === itemName && item.quantity > 1) {
+              item.quantity--;
+            }
+            return item;
+          });
+          localStorage.setItem('cartItems', JSON.stringify(cartItems));
+          updateCartDisplay();
+        });
+
+        $('body').on('click', '.add-quantity-button', function() {
+          var itemName = $(this).closest('tr').find('td:nth-child(2)').text();
+          cartItems = cartItems.map(function(item) {
+            if (item.name === itemName) {
+              item.quantity++;
+            }
+            return item;
+          });
+          localStorage.setItem('cartItems', JSON.stringify(cartItems));
+          updateCartDisplay();
+        });
+
+        $('#remove-all-items-button').click(function() {
+          if (confirm('Voulez vous supprimer tous les produits du panier ?')) {
+            cartItems = [];
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            updateCartDisplay();
+          }
+        });
+      });
+      function updateCartTotalItems(){
+        var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        var total = 0;
+        for (var i = 0; i < cartItems.length; i++){
+           total += cartItems[i].quantity;
+        }
+        $(".count").text(total);
+    }
+    </script>
+  </body>
+</html>

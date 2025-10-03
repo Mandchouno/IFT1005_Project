@@ -1,0 +1,86 @@
+<!-- Auteurs: Nelson Kamga Newa, Guillaume Sabourin, Mandi Téo Vigier, Ahmed Mhedhbi -->
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>OnlineShop - Produits</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <script
+      src="./assets/js/jquery-3.2.1.min.js"
+      type="text/javascript"
+    ></script>
+    <script src="./assets/scripts/products.js" type="text/javascript"></script>
+    <script src="./assets/scripts/header.js" type="text/javascript"></script>
+  </head>
+
+  <body class="products">
+    <header>
+      <div>
+        <a href="./index.html">
+          <img alt="logo" src="./assets/img/logo.svg" title="Accueil" />
+        </a>
+        <nav>
+          <ul>
+            <li><a href="./index.html">Accueil</a></li>
+            <li class="active"><a href="./products.html">Produits</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+            <li>
+              <a
+                class="shopping-cart"
+                href="./shopping-cart.html"
+                title="Panier"
+              >
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                  <i class="fa fa-shopping-cart fa-stack-1x"></i>
+                </span>
+                <span class="count">4</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="row">
+      <section class="products-list-side-bar" aria-label="Filtres">
+        <section>
+          <h2>Catégories</h2>
+          <div id="product-categories" class="products-list-button-group">
+            <button id="cameras">Appareils photo</button>
+            <button id="consoles">Consoles</button>
+            <button id="screens">Écrans</button>
+            <button id="computers">Ordinateurs</button>
+            <button id="all" class="selected">Tous les produits</button>
+          </div>
+        </section>
+        <section>
+          <h2>Classement</h2>
+          <div id="product-criteria" class="products-list-button-group">
+            <button id="price-asc" class="selected">Prix (bas-haut)</button>
+            <button id="price-desc">Prix (haut-bas)</button>
+            <button id="name-asc">Nom (A-Z)</button>
+            <button id="name-desc">Nom (Z-A)</button>
+          </div>
+        </section>
+      </section>
+      <article class="products-list-main-panel">
+        <div class="product-list-title">
+          <h1>Produits</h1>
+          <p id="products-count"></p>
+        </div>
+
+        <div id="products-list"></div>
+      </article>
+    </main>
+    <footer>
+      <p>
+        Nelson Kamga Newa 20288991, Guillaume Sabourin 20278765, Mandi Téo
+        Vigier 20237155, Ahmed Mhedhbi 20237399
+      </p>
+    </footer>
+  </body>
+</html>
